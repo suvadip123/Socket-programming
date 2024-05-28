@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+
+int main(){
+
+  char *ip = "127.0.0.1";
+  int port = 5566;
+
+  int sock;
+  struct sockaddr_in addr;
+  socklen_t addr_size;
+  char buffer[1024];
+   char crc[1024];
+  //char str[1024];
+  int n;
+
+  sock = socket(AF_INET, SOCK_STREAM, 0);
+  if (sock < 0){
+    perror("[-]Socket error");
+    exit(1);
+  }
+  printf("[+]TCP server socket created.\n");
+
+  memset(&addr, '\0', sizeof(addr));
+  addr.sin_family = AF_INET;
+  addr.sin_port = port;
+  addr.sin_addr.s_addr = inet_addr(ip);
+
+  connect(sock, (struct sockaddr*)&addr, sizeof(addr));
+  printf("Connected to the server.\n");
+  
+                bzero(buffer, 1024);
+                  //bzero(crc,1024);
+                 //bzero(str, 1024);
+                printf("Enter the data word.... :\n ");
+                 scanf("%s",buffer);
+
+                 bzero(crc,1024);
+                  printf("Enter the data word.... :\n ");
+                 scanf("%s",crc);
+
+                   //scanf("%s",buffer);
+                       send(sock, buffer, strlen(buffer), 0);
+                       recv(sock,buffer,sizeof(buffer),0);
+                       
+                       send(sock, crc, strlen(crc), 0);
+              
+                //strcpy(buffer, str);
+                // printf("Sending Data to Server: %s\n", buffer);
+           
+                 //printf("Enter the crc word.... : \n");
+                // scanf("%[^\n]s",crc);
+                      //scanf("%s",crc);
+                //  printf("Sending Crc to Server: %s\n", crc);
+                //  send(sock, buffer, strlen(buffer), 0);
+                 //send(sock, crc, strlen(crc), 0);
+
+                //bzero(buffer, 1024);
+                //bzero(crc,1024);
+             
+                recv(sock, buffer, sizeof(buffer), 0);
+                printf(" Receiving  Response from server: %s\n\n", buffer);
+                close(sock);
+                printf("Disconnected from the server.\n");
+
+    
+//   close(sock);
+//   printf("Disconnected from the server.\n");
+
+  return 0;
+
+}
